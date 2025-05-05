@@ -3,6 +3,8 @@ import QuickBooks from 'node-quickbooks';
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
 import { Env } from './index';
 
+export { getQuickBooksClient, getPlaidClient, syncGeneralLedger, syncBankTransactions, checkAnomalies };
+
 function getQuickBooksClient(env: Env): Promise<any> {
   return new Promise((resolve, reject) => {
     const qbo = new QuickBooks(
@@ -46,7 +48,7 @@ function getPlaidClient(env: Env): PlaidApi {
   return new PlaidApi(configuration);
 }
 
-function getSupabaseClient(env: Env) {
+export function getSupabaseClient(env: Env) {
   return createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE);
 }
 
@@ -54,7 +56,7 @@ async function syncGeneralLedger(qbo: any, supabase: any): Promise<any> {
   return new Promise((resolve, reject) => {
     qbo.findAccounts({
       fetchAll: true
-    }, async (err, accounts) => {
+    }, async (err: any, accounts: any[]) => {
       if (err) {
         console.error('Error fetching QuickBooks accounts:', err);
         return reject(err);
@@ -63,7 +65,7 @@ async function syncGeneralLedger(qbo: any, supabase: any): Promise<any> {
       const { data: accountsData, error: accountsError } = await supabase
         .from('qbo_accounts')
         .upsert(
-          accounts.map(account => ({
+          accounts.map((account: any) => ({
             id: account.Id,
             name: account.Name,
             account_type: account.AccountType,
@@ -88,7 +90,7 @@ async function syncGeneralLedger(qbo: any, supabase: any): Promise<any> {
       qbo.findJournalEntries({
         fetchAll: true,
         where: `TxnDate >= '${startDate.toISOString().split('T')[0]}'`
-      }, async (err, journalEntries) => {
+      }, async (err: any, journalEntries: any[]) => {
         if (err) {
           console.error('Error fetching QuickBooks journal entries:', err);
           return reject(err);
@@ -112,7 +114,7 @@ async function syncGeneralLedger(qbo: any, supabase: any): Promise<any> {
           }
           
           if (entry.Line && entry.Line.length > 0) {
-            const lineItems = entry.Line.map(line => ({
+            const lineItems = entry.Line.map((line: any) => ({
               journal_entry_id: entry.Id,
               line_id: line.Id,
               account_id: line.JournalEntryLineDetail?.AccountRef?.value,
@@ -219,7 +221,7 @@ async function syncBankTransactions(plaidClient: PlaidApi, accessToken: string, 
       accounts: accounts.length,
       transactions: transactions.length
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error syncing bank transactions:', error);
     throw error;
   }
@@ -250,7 +252,7 @@ async function checkAnomalies(supabase: any, slackWebhookUrl: string): Promise<a
           {
             type: 'divider'
           },
-          ...anomalies.map(anomaly => ({
+          ...anomalies.map((anomaly: any) => ({
             type: 'section',
             text: {
               type: 'mrkdwn',
@@ -281,7 +283,7 @@ async function checkAnomalies(supabase: any, slackWebhookUrl: string): Promise<a
     return {
       anomaliesDetected: anomalies.length
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error checking anomalies:', error);
     throw error;
   }
@@ -328,7 +330,7 @@ export async function syncQuickBooksData(env: Env): Promise<any> {
       bankTransactions: bankResult,
       anomalies: anomalyResult
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in syncQuickBooksData:', error);
     throw error;
   }

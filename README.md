@@ -99,3 +99,40 @@ TIMEZONE=America/Chicago
 4. Anomaly detection SQL functions analyze the data for unusual patterns
 5. Alerts are sent to Slack when anomalies are detected
 6. The Slack bot can answer natural language questions about finances
+
+## 🤖 Slack Bot Commands
+
+The Finance Sync Worker includes a Slack bot that can answer natural language questions about your financial data. Use the `/finance` slash command followed by your question.
+
+### Example Queries
+
+Try these example queries with the `/finance` slash command:
+
+```
+/finance What was our revenue last month?
+/finance Show me our top 5 expenses this quarter
+/finance What's our current cash position?
+/finance Compare revenue between Q1 and Q2
+/finance What's our profit margin trend over the past 6 months?
+/finance Show me unusual transactions over $1000 in the last week
+/finance What accounts have had the most activity this month?
+/finance How much did we spend on marketing last quarter?
+/finance What's our burn rate?
+/finance Show me our balance sheet
+```
+
+### Tips for Better Results
+
+- Be specific about time periods (e.g., "last month", "Q2", "past 30 days")
+- Use financial terms the system will understand (revenue, expenses, profit margin, etc.)
+- Ask for comparisons between time periods to spot trends
+- You can ask for specific accounts or categories (e.g., "marketing expenses", "software subscriptions")
+- For complex queries, break them down into simpler questions
+
+### Setting Up the Slack Bot
+
+See the detailed setup instructions in `src/slack-setup.html` for how to:
+1. Create a Slack app
+2. Configure slash commands
+3. Set up permissions
+4. Configure incoming webhooks
