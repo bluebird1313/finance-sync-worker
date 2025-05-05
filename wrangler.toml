@@ -1,0 +1,23 @@
+name = "finance-sync-worker"
+main = "src/index.ts"
+compatibility_date = "2023-03-01"
+
+[triggers]
+crons = ["0 3 * * *"] # Run daily at 3 AM UTC
+
+[vars]
+TIMEZONE = "America/Chicago"
+
+# Secrets that need to be set using `wrangler secret put <NAME>`
+# QBO_CLIENT_ID
+# QBO_CLIENT_SECRET
+# QBO_REFRESH_TOKEN
+# QBO_REALM_ID
+# PLAID_CLIENT_ID
+# PLAID_SECRET
+# PLAID_ENV
+# PLAID_ACCESS_TOKEN
+# SUPABASE_URL
+# SUPABASE_SERVICE_ROLE
+# SLACK_WEBHOOK_URL
+# SLACK_VERIFICATION_TOKEN
