@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Bot Setup Guide</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .step {
+      margin-bottom: 30px;
+    }
+    .tip {
+      background-color: #e1f5fe;
+      padding: 15px;
+      border-left: 5px solid #03a9f4;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Finance Bot Setup Guide</h1>
+  
+  <div class="step">
+    <h2>Step 1: Create a Slack App</h2>
+    <ol>
+      <li>Go to <a href="https://api.slack.com/apps" target="_blank">https://api.slack.com/apps</a></li>
+      <li>Click "Create New App" and choose "From scratch"</li>
+      <li>Enter "Finance Bot" as the app name</li>
+      <li>Select your workspace and click "Create App"</li>
+    </ol>
+  </div>
+  
+  <div class="step">
+    <h2>Step 2: Configure Slash Command</h2>
+    <ol>
+      <li>In the sidebar, select "Slash Commands" under "Features"</li>
+      <li>Click "Create New Command"</li>
+      <li>Fill in the following details:
+        <ul>
+          <li>Command: <code>/finance</code></li>
+          <li>Request URL: <code>https://your-worker-url.workers.dev/slack/command</code></li>
+          <li>Short Description: "Query financial data"</li>
+          <li>Usage Hint: "[query]"</li>
+        </ul>
+      </li>
+      <li>Click "Save"</li>
+    </ol>
+  </div>
+  
+  <div class="step">
+    <h2>Step 3: Set Up Permissions</h2>
+    <ol>
+      <li>In the sidebar, select "OAuth & Permissions" under "Features"</li>
+      <li>Under "Scopes", add the following Bot Token Scopes:
+        <ul>
+          <li><code>commands</code> - To create the slash command</li>
+          <li><code>chat:write</code> - To send messages to channels</li>
+        </ul>
+      </li>
+      <li>Scroll up to "OAuth Tokens for Your Workspace" and click "Install to Workspace"</li>
+      <li>Review the permissions and click "Allow"</li>
+      <li>Copy the "Bot User OAuth Token" for later use</li>
+    </ol>
+  </div>
+  
+  <div class="step">
+    <h2>Step 4: Configure Incoming Webhooks</h2>
+    <ol>
+      <li>In the sidebar, select "Incoming Webhooks" under "Features"</li>
+      <li>Toggle "Activate Incoming Webhooks" to On</li>
+      <li>Click "Add New Webhook to Workspace"</li>
+      <li>Select the channel where you want to receive financial alerts</li>
+      <li>Click "Allow"</li>
+      <li>Copy the Webhook URL for use in your environment variables</li>
+    </ol>
+  </div>
+  
+  <div class="step">
+    <h2>Step 5: Update Environment Variables</h2>
+    <pre>
+# Add to your .env file
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
+SLACK_VERIFICATION_TOKEN=your-verification-token
+    </pre>
+    <p>Find your verification token in the "Basic Information" section under "App Credentials".</p>
+  </div>
+  
+  <div class="tip">
+    <h3>Example Queries</h3>
+    <p>Here are some example queries you can try with the <code>/finance</code> slash command:</p>
+    <ul>
+      <li><code>/finance What was our revenue last month?</code></li>
+      <li><code>/finance Show me monthly expenses for the past year</code></li>
+      <li><code>/finance What's our current profit margin?</code></li>
+      <li><code>/finance Show me recent transactions</code></li>
+      <li><code>/finance What are our account balances?</code></li>
+    </ul>
+  </div>
+</body>
+</html>
